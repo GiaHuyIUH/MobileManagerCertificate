@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import axios from "axios";
 import { NavigationProp } from "@react-navigation/native";
-import { API_BASE_URL } from "@env";
+import { REACT_APP_API_BASE_URL } from "../utils/constant"
 import { useDispatch } from "react-redux";
 import { login } from "../store/slices/authSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -20,8 +20,9 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
   const handleLogin = async () => {
     setLoading(true); // Set loading state to true
     try {
-      console.log(API_BASE_URL);
-      const response = await axios.post(`${API_BASE_URL}/auth/login`, {
+
+      console.log(REACT_APP_API_BASE_URL);
+      const response = await axios.post(`${REACT_APP_API_BASE_URL}/auth/login`, {
         email,
         password,
       });

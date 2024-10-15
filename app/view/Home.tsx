@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
-import { API_BASE_URL } from "@env";
+import { REACT_APP_API_BASE_URL } from "../utils/constant"
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Search from "../components/Search";
 
@@ -31,10 +31,10 @@ const  Home = () => {
   const fetchData = async (courseLimit, bundleLimit) => {
     try {
       const coursesResponse = await axios.get(
-        `${API_BASE_URL}/course?limit=${courseLimit}`
+        `${REACT_APP_API_BASE_URL}/course?limit=${courseLimit}`
       );
       const bundlesResponse = await axios.get(
-        `${API_BASE_URL}/coursebundles?limit=${bundleLimit}`
+        `${REACT_APP_API_BASE_URL}/coursebundles?limit=${bundleLimit}`
       );
       return { courses: coursesResponse.data, bundles: bundlesResponse.data };
     } catch (error) {
@@ -46,7 +46,7 @@ const  Home = () => {
   // Function to fetch total courses count
   const fetchTotalCoursesCount = async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/course/countCourse`);
+      const response = await axios.get(`${REACT_APP_API_BASE_URL}/course/countCourse`);
       setTotalCourses(response.data.totalCourses); // Assuming the response returns an object with 'totalCourses' property
     } catch (error) {
       console.error("Error fetching total courses count", error);
@@ -56,7 +56,7 @@ const  Home = () => {
   // Function to fetch total bundles count
   const fetchTotalBundlesCount = async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/coursebundles/countCourseBundle`);
+      const response = await axios.get(`${REACT_APP_API_BASE_URL}/coursebundles/countCourseBundle`);
       setTotalBundles(response.data.count); // Assuming the response returns an object with 'totalBundles' property
     } catch (error) {
       console.error("Error fetching total bundles count", error);
