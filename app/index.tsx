@@ -11,6 +11,9 @@ import Home from "./view/Home";
 import Main from "./view/Main";
 import BundleDetail from "./view/BundleDetail";
 import OrganizationDetail from "./view/OrganizationDetail";
+import NotFound from "./view/NotFound";
+import LearnCourse from "./view/LearnCourse";
+import CourseDetail from "./view/CourseDetail";
 
 const Stack = createNativeStackNavigator();
 
@@ -47,6 +50,21 @@ export default function App() {
           <Stack.Screen
             name="OrganizationDetail"
             component={OrganizationDetail}
+            options={{ headerShown: false }} // Hide the header
+          />
+           <Stack.Screen
+            name="NotFound"
+            component={NotFound}
+            options={{ headerShown: false }} // Hide the header
+          />
+            <Stack.Screen
+            name="LearnCourse"
+            component={LearnCourse}
+            options={{ headerShown: false }} // Hide the header
+          />
+            <Stack.Screen
+            name="CourseDetail"
+            component={CourseDetail}
             options={{ headerShown: false }} // Hide the header
           />
         </Stack.Navigator>
