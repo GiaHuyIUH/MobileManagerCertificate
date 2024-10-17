@@ -12,10 +12,10 @@ import {
 import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios"; // Import axios
-import { API_BASE_URL } from "../utils/constants";
+import { REACT_APP_API_BASE_URL } from "../utils/constant"
 import { updateUser } from "../store/slices/authSlice";
 
-const Signup = ({ isVisible, onClose }) => {
+const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
@@ -26,7 +26,7 @@ const Signup = ({ isVisible, onClose }) => {
   const handleSignup = async () => {
     try {
       // Gửi yêu cầu API
-      const response = await axios.post(`${process.env.API_BASE_URL}/auth/signup`, {
+      const response = await axios.post(`${REACT_APP_API_BASE_URL}/auth/signup`, {
         email,
         name: fullName,
         password,

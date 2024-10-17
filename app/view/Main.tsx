@@ -1,4 +1,3 @@
-// Main.tsx
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "./Home"; // Adjust the import path
@@ -15,7 +14,7 @@ const Main = () => {
       screenOptions={{
         headerShown: false, // Hide the header for all tabs
         tabBarActiveTintColor: "#007BFF", // Active tab color
-        tabBarInactiveTintColor: "#gray", // Inactive tab color
+        tabBarInactiveTintColor: "#000000", // Inactive tab color (black)
       }}
     >
       <Tab.Screen
