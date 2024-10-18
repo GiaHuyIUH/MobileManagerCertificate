@@ -7,12 +7,9 @@ import { useDispatch } from "react-redux";
 import { login } from "../store/slices/authSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-interface LoginProps {
-  navigation: NavigationProp<any>;
-}
 
-const Login: React.FC<LoginProps> = ({ navigation }) => {
-  const [email, setEmail] = useState("testchangpass@gmail.com");
+const Login = ({ navigation }) => {
+  const [email, setEmail] = useState("tranphu.chituong.9d4@gmail.com");
   const [password, setPassword] = useState("123456789");
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
@@ -47,7 +44,8 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
         Alert.alert("Login Failed", "User data not found.");
       }
     } catch (error) {
-      Alert.alert("Login Failed", error.response?.data?.message || "Something went wrong");
+      const errorMessage = error.response?.data?.message || "Something went wrong";
+      Alert.alert("Login Failed", errorMessage);
     } finally {
       setLoading(false); // Set loading state to false
     }

@@ -21,8 +21,8 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 
 const BundleDetail = () => {
   const { params } = useRoute();
-  const { id } = params as { id: string };
-  const { user } = useSelector((state: { auth: { user: any } }) => state.auth);
+  const { id } = params;
+  const { user } = useSelector(state => state.auth);
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
@@ -60,7 +60,7 @@ const BundleDetail = () => {
   }, [id]);
 
   const hasCertificate = user?.certificates?.some(
-    (certificate: { bundle: string }) => certificate?.bundle === id
+    (certificate) => certificate?.bundle === id
   );
 
   if (loading) {
