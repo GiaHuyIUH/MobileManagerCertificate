@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Button,
   ActivityIndicator,
+  SafeAreaView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
@@ -117,7 +118,8 @@ const  Home = () => {
   }
 
   return (
-    <ScrollView style={styles.container}>
+    <SafeAreaView  style={styles.container}>
+    <ScrollView showsVerticalScrollIndicator= {false}>
       {/* Total Courses Count */}
       <View style={styles.totalCoursesContainer}>
       <Search/>
@@ -235,6 +237,7 @@ const  Home = () => {
         </View>
       </View>
     </ScrollView>
+    </SafeAreaView>
   );
 };
 
@@ -242,6 +245,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    paddingVertical:30
   },
   loading: {
     flex: 1,

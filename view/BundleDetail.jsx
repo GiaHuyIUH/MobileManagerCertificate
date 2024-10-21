@@ -13,7 +13,7 @@ import {
   ScrollView,
   FlatList,
 } from "react-native";
-import { ProgressBar } from 'react-native-paper';
+import { ProgressBar } from "react-native-paper";
 import { REACT_APP_API_BASE_URL } from "../utils/constant";
 import axios from "axios";
 import { addCertificateToUser } from "../store/slices/authSlice";
@@ -21,8 +21,8 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 
 const BundleDetail = () => {
   const { params } = useRoute();
-  const { id } = params as { id: string };
-  const { user } = useSelector((state: { auth: { user: any } }) => state.auth);
+  const { id } = params;
+  const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
@@ -31,9 +31,6 @@ const BundleDetail = () => {
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
-
-
-
 
   const getEnrollmentStatus = (courseId) => {
     if (!user || !user.enrollments) return null;
@@ -60,7 +57,7 @@ const BundleDetail = () => {
   }, [id]);
 
   const hasCertificate = user?.certificates?.some(
-    (certificate: { bundle: string }) => certificate?.bundle === id
+    (certificate) => certificate?.bundle === id
   );
 
   if (loading) {
@@ -74,7 +71,6 @@ const BundleDetail = () => {
       </View>
     );
   }
- 
 
   const canGetCertificate = () => {
     if (!user || !bundle.courses) return false;
@@ -221,7 +217,6 @@ const BundleDetail = () => {
             Email: {bundle.organization.email}
           </Text>
         </View>
-
       </View>
       {/* // Courses in this Bundle */}
       <Text style={styles.coursesHeader}>Courses in this Bundle:</Text>
@@ -230,7 +225,6 @@ const BundleDetail = () => {
           const enrollment = getEnrollmentStatus(course._id);
           return (
             <TouchableOpacity
-
               onPress={() =>
                 navigation.navigate("CourseDetail", {
                   id: course._id,
@@ -266,13 +260,16 @@ const BundleDetail = () => {
               </Text>
               <Text
                 style={{
-                  fontSize: 14, // Kích thước chữ cho mô tả
-                  color: "#555", // Màu chữ nhạt hơn
+                  fontSize: 14, 
+                  color: "#555", 
+                  lineHeight: 20, 
+                  minHeight: 60, 
                 }}
                 numberOfLines={3}
               >
                 {course.description}
               </Text>
+
               <Text
                 style={{
                   marginTop: 5,
@@ -287,9 +284,8 @@ const BundleDetail = () => {
                   <Text
                     style={{ fontSize: 14, color: "#3b82f6", marginBottom: 5 }}
                   >
-                    Progress: {enrollment.progress}%
+                    Progress: {parseFloat(enrollment.progress.toFixed(1))}%
                   </Text>
-
                   {/* ProgressBar for React Native */}
                   <ProgressBar
                     progress={enrollment.progress / 100}

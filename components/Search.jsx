@@ -3,10 +3,10 @@ import { View, TextInput, StyleSheet, TouchableOpacity } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Feather from "@expo/vector-icons/Feather"; // Biểu tượng "x"
 
-const Search: React.FC = () => {
+const Search = () => {
   const [query, setQuery] = useState("");
 
-  const handleInputChange = (text: string) => {
+  const handleInputChange = (text) => {
     setQuery(text);
   };
 

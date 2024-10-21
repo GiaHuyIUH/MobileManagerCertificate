@@ -1,5 +1,3 @@
-// App.js
-import { View, Text } from "react-native";
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -14,14 +12,20 @@ import OrganizationDetail from "./view/OrganizationDetail";
 import NotFound from "./view/NotFound";
 import LearnCourse from "./view/LearnCourse";
 import CourseDetail from "./view/CourseDetail";
+import Connect from "./view/Connect";
+
 
 const Stack = createNativeStackNavigator();
-
 export default function App() {
   return (
     <Provider store={store}>
       <NavigationContainer independent={true}>
-        <Stack.Navigator initialRouteName="Login">
+        <Stack.Navigator initialRouteName="Connect">
+        <Stack.Screen
+            name="Connect"
+            component={Connect}
+            options={{ headerShown: false }} // Hide the header
+          />
           <Stack.Screen
             name="Login"
             component={Login}
@@ -52,17 +56,17 @@ export default function App() {
             component={OrganizationDetail}
             options={{ headerShown: false }} // Hide the header
           />
-           <Stack.Screen
+          <Stack.Screen
             name="NotFound"
             component={NotFound}
             options={{ headerShown: false }} // Hide the header
           />
-            <Stack.Screen
+          <Stack.Screen
             name="LearnCourse"
             component={LearnCourse}
             options={{ headerShown: false }} // Hide the header
           />
-            <Stack.Screen
+          <Stack.Screen
             name="CourseDetail"
             component={CourseDetail}
             options={{ headerShown: false }} // Hide the header
