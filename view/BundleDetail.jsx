@@ -18,6 +18,7 @@ import { REACT_APP_API_BASE_URL } from "../utils/constant";
 import axios from "axios";
 import { addCertificateToUser } from "../store/slices/authSlice";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const BundleDetail = () => {
   const { params } = useRoute();
@@ -31,6 +32,7 @@ const BundleDetail = () => {
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [token, setToken] = useState(null);
 
   const getEnrollmentStatus = (courseId) => {
     if (!user || !user.enrollments) return null;
@@ -55,6 +57,19 @@ const BundleDetail = () => {
 
     fetchBundle();
   }, [id]);
+
+
+  useEffect(() => {
+    const getToken = async () => {
+      try {
+        const token = await AsyncStorage.getItem("token");
+        setToken(token);
+      } catch (error) {
+        console.error("Error getting token from AsyncStorage:", error);
+      }
+    };
+    getToken();
+  }, []);
 
   const hasCertificate = user?.certificates?.some(
     (certificate) => certificate?.bundle === id
@@ -83,15 +98,20 @@ const BundleDetail = () => {
   const handleGetCertificate = async () => {
     setModalOpen(true);
     try {
-      const studentId = user?._id || "guest";
-      await axios.post(
+      const studentId = user?._id ;
+      
+
+     const r= await axios.post(
         `${REACT_APP_API_BASE_URL}/enrollment/createBundleEnrollment`,
         {
           user: studentId,
           bundle: bundle._id,
+        },{
+          headers: {
+            Authorization: `Bearer ${token}`, // Thêm token vào headers
+          },
         }
       );
-
       const organizationId = bundle.organization._id;
       const response = await axios.post(
         `${REACT_APP_API_BASE_URL}/certificates/createCertificateBunble`,
@@ -99,6 +119,10 @@ const BundleDetail = () => {
           user: studentId,
           organization: organizationId,
           bunbles: bundle._id,
+        },{
+          headers: {
+            Authorization: `Bearer ${token}`, // Thêm token vào headers
+          },
         }
       );
 
@@ -177,10 +201,12 @@ const BundleDetail = () => {
           title={
             hasCertificate
               ? "You have already received the certificate"
-              : "Get Certificate"
+              : canGetCertificate()
+                ? "Get Certificate"
+                : "Complete All Courses to Get Certificate"
           }
           onPress={handleGetCertificate}
-          disabled={hasCertificate}
+          disabled={!canGetCertificate() ||hasCertificate}
         />
       </View>
       <View
