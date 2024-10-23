@@ -13,6 +13,9 @@ import NotFound from "./view/NotFound";
 import LearnCourse from "./view/LearnCourse";
 import CourseDetail from "./view/CourseDetail";
 import Connect from "./view/Connect";
+import DocumentDetail from "./view/DocumentDetail";
+import FinalTest from "./view/FinalTest";
+import SearchPage from "./view/SearchPage";
 
 
 const Stack = createNativeStackNavigator();
@@ -20,10 +23,20 @@ export default function App() {
   return (
     <Provider store={store}>
       <NavigationContainer independent={true}>
-        <Stack.Navigator initialRouteName="Connect">
+        <Stack.Navigator initialRouteName="Login">
+        {/* <Stack.Screen
+            name="LearnCourse"
+            component={LearnCourse}
+            options={{ headerShown: false }} // Hide the header
+          /> */}
         <Stack.Screen
             name="Connect"
             component={Connect}
+            options={{ headerShown: false }} // Hide the header
+          />
+           <Stack.Screen
+            name="SearchPage"
+            component={SearchPage}
             options={{ headerShown: false }} // Hide the header
           />
           <Stack.Screen
@@ -49,6 +62,16 @@ export default function App() {
           <Stack.Screen
             name="BundleDetail"
             component={BundleDetail}
+            options={{ headerShown: false }} // Hide the header
+          />
+          <Stack.Screen
+            name="DocumentDetail"
+            component={DocumentDetail}
+            options={{ headerShown: false }} // Hide the header
+          />
+          <Stack.Screen
+            name="FinalTest"
+            component={FinalTest}
             options={{ headerShown: false }} // Hide the header
           />
           <Stack.Screen

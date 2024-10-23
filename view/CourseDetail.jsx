@@ -78,7 +78,7 @@ const CourseDetail = ({ navigation }) => {
     }
 
     if (hasEnrolled) {
-      navigation.navigate("CourseLearn", { id }); // Navigate to the course learning screen
+      navigation.navigate("LearnCourse", { id }); // Navigate to the course learning screen
       return;
     }
 
@@ -93,7 +93,7 @@ const CourseDetail = ({ navigation }) => {
       const amount =
         course.price === 0
           ? ethers.utils.parseEther("0.000000001")
-          : ethers.utils.parseEther((course.price / 1000000).toString());
+          : ethers.utils.parseEther((course.price / 100000).toString());
       // const amount =
       //   course.price === 0 ? 0.000000001 : (course.price / 1000).toFixed(18);
       const walletOr =
@@ -130,9 +130,9 @@ const CourseDetail = ({ navigation }) => {
 
         console.log("Enrollment created successfully:", response.data);
         dispatch(addEnrollmentToUser(response.data));
-        navigation.navigate("CourseLearn", { id }); // Navigate to the learning page
+        navigation.navigate("LearnCourse", { id }); // Navigate to the learning page
       } else {
-        setMessage(paymentResult.message);
+        navigation.navigate("Connect");
       }
     } catch (error) {
       console.error("Failed to process payment or create enrollment:", error);

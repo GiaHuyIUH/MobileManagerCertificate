@@ -120,7 +120,7 @@ const  Home = () => {
   return (
     <SafeAreaView  style={styles.container}>
     <ScrollView showsVerticalScrollIndicator= {false}>
-      {/* Total Courses Count */}
+      <View style={{marginTop:10}}></View>
       <View style={styles.totalCoursesContainer}>
       <Search/>
       </View>
@@ -245,7 +245,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    paddingVertical:30
+    paddingVertical:30,
+    paddingBottom: 0,
   },
   loading: {
     flex: 1,
@@ -260,6 +261,7 @@ const styles = StyleSheet.create({
   },
   section: {
     marginBottom: 30,
+   
   },
   sectionTitle: {
     fontSize: 20,

@@ -3,7 +3,7 @@ import { View, Text, Button, StyleSheet } from 'react-native';
 
 const NotFound = ({ navigation }) => {
   const handleGoHome = () => {
-    navigation.navigate('Home'); // Điều hướng về trang chính
+    navigation.navigate('Home');
   };
 
   return (

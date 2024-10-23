@@ -36,7 +36,6 @@ export async function payForCourse(
   return { success: true, message: 'Thanh toán thành công!' };
 }
 catch (error) {
-  console.error("Lỗi khi thanh toán khóa học:", error);
   return { success: false, message: error.message };
 }}
 

@@ -97,6 +97,7 @@ export default function Connect({ navigation }) {
         setSnackMessage("Bạn đã ngắt kết nối ví.");
         setSnackVisible(true);
       } else {
+        console.log("Kết nối ví...");
         await open();
       }
     } catch (error) {
@@ -135,11 +136,6 @@ export default function Connect({ navigation }) {
         </TouchableOpacity>
       )}
 
-      {/* Hiển thị tổng số chứng chỉ
-      {totalCertificates !== null && (
-                <Text style={styles.heading}>Tổng số chứng chỉ: {totalCertificates}</Text>
-            )}
-
       <WalletConnectModal
         explorerRecommendedWalletIds={[
           "c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96",
@@ -147,7 +143,7 @@ export default function Connect({ navigation }) {
         explorerExcludedWalletIds={"ALL"}
         projectId={projectId}
         providerMetadata={providerMetadata}
-      /> */}
+      /> 
     </View>
   );
 }
