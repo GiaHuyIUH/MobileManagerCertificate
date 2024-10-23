@@ -141,7 +141,7 @@ const BundleDetail = () => {
   };
 
   return (
-    <ScrollView>
+    <ScrollView style={styles.container}>
       <View style={styles.imageContainer}>
         <Image
           source={{ uri: bundle.image }}
@@ -358,7 +358,7 @@ const BundleDetail = () => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    paddingVertical:30,
   },
   imageContainer: {
     position: "relative",

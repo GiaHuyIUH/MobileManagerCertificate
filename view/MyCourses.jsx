@@ -159,6 +159,7 @@ const MyCourses = ({ navigation }) => {
       ) : (
         <Text style={styles.noCoursesText}>No enrollments found.</Text>
       )}
+      <View style={{ marginBottom: 20 }}></View>
     </ScrollView>
   );
 };
@@ -168,6 +169,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: '#f4f4f4',
+    paddingBottom: 100,
   },
   loadingContainer: {
     flex: 1,

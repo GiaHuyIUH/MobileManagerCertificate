@@ -42,6 +42,11 @@ const FinalTest = ({ route }) => {
     });
   };
 
+
+  const hasEnrolled = user.enrollments.find((enrollment) => {
+    if (!enrollment.course) return false;
+    return enrollment.course.toString() === courseId;
+  });
   const handleSubmitQuiz = async () => {
     setLoadingQuiz(true);
     const submissionData = {
@@ -76,9 +81,7 @@ const FinalTest = ({ route }) => {
       // Handle successful submission
       const newQuizResult = response.data.quizResult;
 
-      // Check if the score is greater than or equal to 70
       if (newQuizResult.score >= 70) {
-        // Create a certificate
         try {
           const certificateData = {
             user: user._id,
@@ -96,9 +99,7 @@ const FinalTest = ({ route }) => {
               },
             }
           );
-
           dispatch(completeEnrollment(hasEnrolled._id));
-          
           // Navigate to Home after successfully creating the certificate
           navigation.navigate("Home"); // Adjust the screen name accordingly
         } catch (certificateError) {

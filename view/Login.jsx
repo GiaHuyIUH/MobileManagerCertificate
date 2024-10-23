@@ -9,7 +9,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 const Login = ({ navigation }) => {
-  const [email, setEmail] = useState("tranphu.chituong.9d4@gmail.com");
+  const [email, setEmail] = useState("testchangpass@gmail.com");
   const [password, setPassword] = useState("123456789");
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();

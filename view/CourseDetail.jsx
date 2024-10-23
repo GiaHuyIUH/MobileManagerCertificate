@@ -93,7 +93,7 @@ const CourseDetail = ({ navigation }) => {
       const amount =
         course.price === 0
           ? ethers.utils.parseEther("0.000000001")
-          : ethers.utils.parseEther((course.price / 1000).toString());
+          : ethers.utils.parseEther((course.price / 100000).toString());
       // const amount =
       //   course.price === 0 ? 0.000000001 : (course.price / 1000).toFixed(18);
       const walletOr =
