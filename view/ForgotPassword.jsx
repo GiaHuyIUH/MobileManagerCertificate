@@ -15,10 +15,12 @@ const ForgotPasswordScreen = ({ navigation }) => {
   useEffect(() => {
     const getToken = async () => {
       const storedToken = await AsyncStorage.getItem("token");
-      setToken(storedToken || "");
+      setToken(storedToken || undefined);
     };
     getToken();
   }, []);
+
+  console.log("Token:", token);
 
   const handleSendCodeEmail = async () => {
     try {
@@ -73,7 +75,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
             style={styles.textInput}
             placeholder="Enter your email"
             value={token ? emailToSend : emailNew}
-            editable={!user}
+            editable={!token}
             onChangeText={setEmailNew}
             keyboardType="email-address"
           />
@@ -97,6 +99,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
+    justifyContent: "center",
     paddingHorizontal: 20,
     backgroundColor: "#fff",
   },

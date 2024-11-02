@@ -16,7 +16,9 @@ import Connect from "./view/Connect";
 import DocumentDetail from "./view/DocumentDetail";
 import FinalTest from "./view/FinalTest";
 import SearchPage from "./view/SearchPage";
-
+import ForgotPasswordScreen from "./view/ForgotPassword";
+import OTPScreen from "./view/OTPScreen";
+import RefreshPassword from "./view/RefreshPassword";
 
 const Stack = createNativeStackNavigator();
 export default function App() {
@@ -24,17 +26,17 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer independent={true}>
         <Stack.Navigator initialRouteName="Login">
-        {/* <Stack.Screen
+          {/* <Stack.Screen
             name="LearnCourse"
             component={LearnCourse}
             options={{ headerShown: false }} // Hide the header
           /> */}
-        <Stack.Screen
+          <Stack.Screen
             name="Connect"
             component={Connect}
             options={{ headerShown: false }} // Hide the header
           />
-           <Stack.Screen
+          <Stack.Screen
             name="SearchPage"
             component={SearchPage}
             options={{ headerShown: false }} // Hide the header
@@ -93,6 +95,24 @@ export default function App() {
             name="CourseDetail"
             component={CourseDetail}
             options={{ headerShown: false }} // Hide the header
+          />
+
+          <Stack.Screen
+            name="ForgotPassword"
+            component={ForgotPasswordScreen}
+            options={{ headerShown: false }} // Hide the header
+          />
+
+          <Stack.Screen
+            name="OTPSCreen"
+            component={OTPScreen}
+            options={{ headerShown: false }}
+          />
+
+          <Stack.Screen
+            name="RefreshPassword"
+            component={RefreshPassword}
+            options={{ headerShown: false }}
           />
         </Stack.Navigator>
       </NavigationContainer>

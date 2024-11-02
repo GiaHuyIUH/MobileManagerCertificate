@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Alert } from "react-native";
 import { TextInput, Button, Text } from "react-native-paper";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { REACT_APP_API_BASE_URL } from "../utils/constant";
-import { useSelector } from "react-redux";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const RefreshPassword = () => {
   const navigation = useNavigation();
@@ -15,7 +14,17 @@ const RefreshPassword = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [user, setUser] = useState(null);
-  const token = AsyncStorage.getItem("token");
+  const [token, setToken] = useState(null);
+
+  useEffect(() => {
+    const fetchToken = async () => {
+      const storedToken = await AsyncStorage.getItem("token");
+      setToken(storedToken);
+    };
+
+    fetchToken();
+    fetchUser();
+  }, []);
 
   const fetchUser = async () => {
     try {
@@ -24,25 +33,21 @@ const RefreshPassword = () => {
       );
       setUser(response.data);
       console.log("User data:", response.data);
-
-      return response.data;
     } catch (error) {
       console.error("Error fetching user:", error);
       Alert.alert("Error fetching user. Please try again.");
-      return null;
     }
   };
 
-  const handleResetPassword = async () => {
+  const handleChangePassword = async () => {
     if (newPassword !== confirmPassword) {
       Alert.alert("Passwords do not match. Please try again.");
       return;
     }
 
-    // Ensure we have the user data
-    const fetchedUser = user || (await fetchUser());
-    if (!fetchedUser) {
-      return; // Exit if user data is still null
+    if (!user || !user._id) {
+      Alert.alert("User data is not available. Please try again.");
+      return;
     }
 
     try {
@@ -70,7 +75,7 @@ const RefreshPassword = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Reset Password</Text>
+      <Text style={styles.title}>Change Password</Text>
 
       <TextInput
         label="New Password"
@@ -92,10 +97,10 @@ const RefreshPassword = () => {
 
       <Button
         mode="contained"
-        onPress={handleResetPassword}
-        style={styles.resetButton}
+        onPress={handleChangePassword}
+        style={styles.changeButton}
       >
-        Reset Password
+        Change Password
       </Button>
     </View>
   );
@@ -117,7 +122,7 @@ const styles = StyleSheet.create({
   input: {
     marginBottom: 12,
   },
-  resetButton: {
+  changeButton: {
     paddingVertical: 8,
     borderRadius: 20,
     backgroundColor: "#00c4cc",
