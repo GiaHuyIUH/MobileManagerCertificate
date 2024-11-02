@@ -5,6 +5,7 @@ import MyCourses from "./MyCourses"; // Adjust the import path
 import Profile from "./Profile"; // Adjust the import path
 import Entypo from "@expo/vector-icons/Entypo";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import ProfileStack from "../navigation/ProfileStack";
 
 const Tab = createBottomTabNavigator();
 
@@ -37,7 +38,7 @@ const Main = () => {
       />
       <Tab.Screen
         name="Profile"
-        component={Profile}
+        component={ProfileStack}
         options={{
           tabBarIcon: ({ color, size }) => (
             <FontAwesome name="user" size={size} color={color} />
