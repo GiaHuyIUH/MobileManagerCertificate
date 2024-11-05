@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
 import {
   View,
-  Image,
   StyleSheet,
   FlatList,
   ActivityIndicator,
 } from "react-native";
 import { useSelector } from "react-redux";
 import { REACT_APP_API_BASE_URL } from "../utils/constant";
-import { Text, Button, Card } from "react-native-paper";
+import { Text, Button, Card, Avatar } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native"; // Import useNavigation
 import axios from "axios";
 
 const Certificates = () => {
+  const navigation = useNavigation(); // Initialize navigation
   const user = useSelector((state) => state.auth.user);
   const [certificates, setCertificates] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -37,15 +38,19 @@ const Certificates = () => {
   };
 
   const renderCertificate = ({ item }) => (
-    <Card style={styles.card} elevation={3}>
-      <Card.Cover
-        source={{ uri: item.imageUrl }}
-        style={styles.certificateImage}
-      />
+    <Card
+      style={styles.card}
+      elevation={3}
+      onPress={() => navigation.navigate("Detaicertificate", { id: item._id })} // Pass certificate ID
+    >
+      <Card.Cover source={{ uri: item.imageUrl }} style={styles.certificateImage} />
       <Card.Content>
-        <Text style={styles.certificateTitle}>
-          {item.course?.title || item.bundle.title}
-        </Text>
+        <Text style={styles.certificateTitle}>{item.course?.title || item.bundle.title}</Text>
+        <View style={styles.organizationInfo}>
+          <Avatar.Image size={32} source={{ uri: item.organization.avatar }} />
+          <Text style={styles.organizationName}>{item.organization.name}</Text>
+        </View>
+        <Text style={styles.issueDate}>Issued on: {new Date(item.issueDate).toLocaleDateString()}</Text>
       </Card.Content>
     </Card>
   );
@@ -69,12 +74,12 @@ const Certificates = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.sectionTitle}>Certificates</Text>
       <FlatList
         data={certificates.slice(0, visibleCount)}
         renderItem={renderCertificate}
         keyExtractor={(item) => item._id}
         contentContainerStyle={styles.listContainer}
+        showsVerticalScrollIndicator={false} // Hide scrollbar
       />
       {visibleCount < certificates.length && (
         <Button
@@ -96,7 +101,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#f9f9f9",
   },
   sectionTitle: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: "bold",
     color: "#333",
     marginBottom: 16,
@@ -104,17 +109,33 @@ const styles = StyleSheet.create({
   },
   card: {
     marginBottom: 16,
-    borderRadius: 8,
+    borderRadius: 10,
     overflow: "hidden",
   },
   certificateImage: {
     height: 180,
   },
   certificateTitle: {
-    fontSize: 18,
-    fontWeight: "600",
+    fontSize: 20,
+    fontWeight: "bold",
     color: "#1976d2",
-    marginTop: 8,
+    marginVertical: 8,
+    textAlign: "center",
+  },
+  organizationInfo: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 4,
+  },
+  organizationName: {
+    fontSize: 14,
+    color: "#666",
+    marginLeft: 8,
+  },
+  issueDate: {
+    fontSize: 14,
+    color: "#999",
+    marginTop: 4,
     textAlign: "center",
   },
   seeMoreButton: {

@@ -42,7 +42,7 @@ const Login = ({ navigation }) => {
 
         // Navigate based on user role
         if (user.role === "customer") {
-          navigation.navigate("Main");
+          navigation.replace("Main");
         } else {
           Alert.alert("Login Failed", "Only customers can login from mobile.");
         }

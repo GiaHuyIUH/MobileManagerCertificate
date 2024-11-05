@@ -20,6 +20,7 @@ import ForgotPasswordScreen from "./view/ForgotPassword";
 import OTPScreen from "./view/OTPScreen";
 import RefreshPassword from "./view/RefreshPassword";
 import Stats from "./view/Stats";
+import DetailCertificate from "./view/DetailCertificate";
 
 const Stack = createNativeStackNavigator();
 export default function App() {
@@ -41,6 +42,11 @@ export default function App() {
             name="Stats"
             component={Stats}
             options={{ title: "Stats" }}
+          />
+          <Stack.Screen
+            name="Detaicertificate"
+            component={DetailCertificate}
+            options={{ title: "Detaicertificate" }}
           />
           <Stack.Screen
             name="SearchPage"

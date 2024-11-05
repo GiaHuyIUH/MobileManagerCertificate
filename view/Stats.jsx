@@ -10,8 +10,6 @@ const Stats = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const user = useSelector((state) => state.auth.user);
-  const navigation = useNavigation();
-
   useEffect(() => {
     const fetchStats = async () => {
       try {
