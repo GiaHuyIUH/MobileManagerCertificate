@@ -1,36 +1,42 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+} from "react-native";
 import axios from "axios";
 import { NavigationProp } from "@react-navigation/native";
-import { REACT_APP_API_BASE_URL } from "../utils/constant"
+import { REACT_APP_API_BASE_URL } from "../utils/constant";
 import { useDispatch } from "react-redux";
 import { login } from "../store/slices/authSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-
 const Login = ({ navigation }) => {
-  const [email, setEmail] = useState("testchangpass@gmail.com");
-  const [password, setPassword] = useState("123456789");
+  const [email, setEmail] = useState("tranhuy12072003@gmail.com");
+  const [password, setPassword] = useState("Anhbakhia3@");
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
   const handleLogin = async () => {
     setLoading(true); // Set loading state to true
     try {
-
       console.log(REACT_APP_API_BASE_URL);
-      const response = await axios.post(`${REACT_APP_API_BASE_URL}/auth/login`, {
-        email,
-        password,
-      });
-
+      const response = await axios.post(
+        `${REACT_APP_API_BASE_URL}/auth/login`,
+        {
+          email,
+          password,
+        }
+      );
 
       const { user, token } = response.data;
-      
+
       if (user) {
         // Save token to localStorage
         await AsyncStorage.setItem("token", token);
-
 
         dispatch(login(user));
 
@@ -44,7 +50,8 @@ const Login = ({ navigation }) => {
         Alert.alert("Login Failed", "User data not found.");
       }
     } catch (error) {
-      const errorMessage = error.response?.data?.message || "Something went wrong";
+      const errorMessage =
+        error.response?.data?.message || "Something went wrong";
       Alert.alert("Login Failed", errorMessage);
     } finally {
       setLoading(false); // Set loading state to false
@@ -75,11 +82,20 @@ const Login = ({ navigation }) => {
         onChangeText={setPassword}
         secureTextEntry={true}
       />
-      <TouchableOpacity onPress={handleForgotPassword} style={styles.forgotButton}>
+      <TouchableOpacity
+        onPress={handleForgotPassword}
+        style={styles.forgotButton}
+      >
         <Text style={styles.forgotButtonText}>Forgot Password?</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={loading}>
-        <Text style={styles.buttonText}>{loading ? "Logging in..." : "Login"}</Text>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={handleLogin}
+        disabled={loading}
+      >
+        <Text style={styles.buttonText}>
+          {loading ? "Logging in..." : "Login"}
+        </Text>
       </TouchableOpacity>
 
       <Text style={styles.footer}>
