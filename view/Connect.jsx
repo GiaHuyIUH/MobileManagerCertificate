@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Alert } from "react-native";
 import {
   WalletConnectModal,
   useWalletConnectModal,
 } from "@walletconnect/modal-react-native";
-import { readTotalCertificates, payForCourse } from "../contract"; // Import hàm payForCourse
+import { readTotalCertificates, payForCourse } from "../contract";
 import { ethers } from "ethers";
 
-// Thay thế bằng projectId của bạn
 const projectId = "4581e0153aee1b8a90841e4d418afbca";
 
 const providerMetadata = {
@@ -25,116 +24,80 @@ export default function Connect({ navigation }) {
   const { open, isConnected, address, provider } = useWalletConnectModal();
   const [snackVisible, setSnackVisible] = useState(false);
   const [snackMessage, setSnackMessage] = useState("");
-  const [totalCertificates, setTotalCertificates] = useState(null); // State để lưu tổng số chứng chỉ
-  // console.log('isConnected', provider);
-  // Cập nhật địa chỉ ví vào Redux khi kết nối
+  const [totalCertificates, setTotalCertificates] = useState(null);
+
   useEffect(() => {
     const getSignerAddress = async () => {
       if (isConnected && provider) {
-        // Tạo một ethers provider từ WalletConnect provider
         const web3Provider = new ethers.providers.Web3Provider(provider);
-        const signer = web3Provider.getSigner(); // Lấy signer
-        const address = await signer.getAddress(); // Lấy địa chỉ ví
-        console.log("Địa chỉ ví:", address);
+        const signer = web3Provider.getSigner();
+        const address = await signer.getAddress();
+        console.log("Wallet Address:", address);
       }
     };
     getSignerAddress();
   }, [isConnected, provider]);
+
   useEffect(() => {
     if (isConnected) {
-      console.log(`Kết nối thành công với ví: ${address}`);
-      setSnackMessage(`Kết nối thành công: ${address}`);
+      console.log(`Successfully connected: ${address}`);
+      setSnackMessage(`Connected: ${address}`);
       setSnackVisible(true);
       fetchTotalCertificates();
     } else {
-      console.log("Chưa kết nối với ví.");
+      console.log("Not connected to wallet.");
     }
   }, [isConnected, address]);
 
   const fetchTotalCertificates = async () => {
-      try {
-          const total = await readTotalCertificates(); // Gọi hàm từ contract.js
-          console.log("Tổng số chứng chỉ:", total); // Log giá trị tổng số chứng chỉ
-          setTotalCertificates(total); // Lưu tổng số chứng chỉ vào state
-      } catch (error) {
-          console.error("Lỗi khi gọi hàm:", error);
-          setSnackMessage('Có lỗi xảy ra khi gọi hàm.');
-          setSnackVisible(true);
-      }
-  };
-
-  // Hàm gọi payForCourse
-  const handlePayForCourse = async () => {
     try {
-      const courseId = "course123";
-      const studentId = "student456";
-      const studentName = "Nguyen Van A";
-      const organization = "0xCCE30abca3d711462214B4c3609d228bC5BF8bEa"; // Địa chỉ của tổ chức
-      const organizationName = "Organization Name";
-      const courseFee = ethers.utils.parseEther("0.00001"); // Số tiền thanh toán (0.1 ETH)
-
-      // Gọi hàm payForCourse
-      const tx = await payForCourse(
-        provider,
-        courseId,
-        studentId,
-        studentName,
-        organization,
-        organizationName,
-        courseFee
-      );
-      console.log("Giao dịch thành công với hash:", tx.hash);
+      const total = await readTotalCertificates();
+      console.log("Total Certificates:", total);
+      setTotalCertificates(total);
     } catch (error) {
-      console.error("Lỗi khi thanh toán khóa học:", error);
+      console.error("Error fetching certificates:", error);
+      setSnackMessage("An error occurred while fetching certificates.");
+      setSnackVisible(true);
     }
   };
 
-  // Hàm xử lý nút kết nối
   const handleButtonPress = async () => {
     try {
       if (isConnected) {
         await provider?.disconnect();
-        setSnackMessage("Bạn đã ngắt kết nối ví.");
+        setSnackMessage("Wallet disconnected.");
         setSnackVisible(true);
       } else {
-        console.log("Kết nối ví...");
+        console.log("Connecting to wallet...");
         await open();
       }
     } catch (error) {
-      console.error("Lỗi khi kết nối với ví:", error);
-      setSnackMessage("Có lỗi xảy ra khi kết nối với ví.");
+      console.error("Error connecting to wallet:", error);
+      setSnackMessage("An error occurred while connecting to the wallet.");
       setSnackVisible(true);
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>WalletConnect Modal RN Tutorial</Text>
-      <Text>{isConnected ? address : "No Connected"}</Text>
+      <Text style={styles.heading}>WalletConnect Modal Tutorial</Text>
+      <Text style={styles.infoText}>
+        {isConnected ? `Connected: ${address}` : "Not Connected"}
+      </Text>
+
       <TouchableOpacity
         onPress={handleButtonPress}
-        style={styles.pressableMargin}
+        style={[
+          styles.button,
+          { backgroundColor: isConnected ? "#FF5A5F" : "#4CAF50" },
+        ]}
       >
         <Text style={styles.buttonText}>
-          {isConnected ? "Disconnect" : "Connect"}
+          {isConnected ? "Disconnect Wallet" : "Connect Wallet"}
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => navigation.navigate("Home")}
-        style={styles.pressableMargin}
-      >
-        <Text style={styles.buttonText}>Home</Text>
-      </TouchableOpacity>
 
-      {/* Nút để thanh toán khóa học */}
-      {isConnected && (
-        <TouchableOpacity
-          onPress={handlePayForCourse}
-          style={styles.pressableMargin}
-        >
-          <Text style={styles.buttonText}>Pay for Course</Text>
-        </TouchableOpacity>
-      )}
+     
 
       <WalletConnectModal
         explorerRecommendedWalletIds={[
@@ -143,7 +106,7 @@ export default function Connect({ navigation }) {
         explorerExcludedWalletIds={"ALL"}
         projectId={projectId}
         providerMetadata={providerMetadata}
-      /> 
+      />
     </View>
   );
 }
@@ -151,23 +114,41 @@ export default function Connect({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#f5f5f5",
     alignItems: "center",
     justifyContent: "center",
+    paddingHorizontal: 20,
   },
   heading: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "bold",
-    marginBottom: 16,
+    color: "#333",
+    marginBottom: 20,
+    textAlign: "center",
   },
-  pressableMargin: {
+  infoText: {
+    fontSize: 16,
+    color: "#555",
+    textAlign: "center",
+    marginBottom: 10,
+  },
+  button: {
     marginTop: 16,
-    backgroundColor: "red",
-    padding: 10,
-    borderRadius: 5,
+    paddingVertical: 12,
+    paddingHorizontal: 25,
+    borderRadius: 8,
+  },
+  payButton: {
+    marginTop: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 25,
+    borderRadius: 8,
+    backgroundColor: "#007bff",
   },
   buttonText: {
     color: "white",
+    fontSize: 16,
+    fontWeight: "600",
     textAlign: "center",
   },
 });

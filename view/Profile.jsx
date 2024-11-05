@@ -274,6 +274,12 @@ const Profile = ({ navigation }) => {
           },
           {
             id: 4,
+            title: "Stats",
+            icon: "stats-chart",
+            name: "Stats",
+          },
+          {
+            id: 5,
             title: "Log out",
             icon: "log-out-outline",
             name: "Logout",
