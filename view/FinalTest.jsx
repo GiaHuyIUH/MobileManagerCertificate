@@ -101,9 +101,10 @@ const FinalTest = ({ route }) => {
           );
           dispatch(completeEnrollment(hasEnrolled._id));
           // Navigate to Home after successfully creating the certificate
-          navigation.navigate("Home"); // Adjust the screen name accordingly
+          navigation.replace("Main"); 
         } catch (certificateError) {
-          console.error("Error creating certificate:", certificateError);
+          console.error("Error creating certificate:", certificateError.response.data);
+
           // Handle error when creating certificate
         }
       } else {

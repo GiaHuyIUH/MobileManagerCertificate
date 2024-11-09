@@ -1,5 +1,6 @@
 // src/features/auth/authSlice.js
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createSlice } from "@reduxjs/toolkit";
 
 const authSlice = createSlice({
@@ -15,7 +16,6 @@ const authSlice = createSlice({
     },
     logoutUser: (state) => {
       state.user = null;
-      localStorage.removeItem("token");
     },
     addEnrollmentToUser: (state, action) => {
       if (state.user) {

@@ -5,12 +5,13 @@ import { useSelector } from "react-redux";
 import { REACT_APP_API_BASE_URL } from "../utils/constant";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-
+import {isEmail} from "../regex/regex";
 const ForgotPasswordScreen = ({ navigation }) => {
   const [token, setToken] = useState("");
   const user = useSelector((state) => state.auth.user);
   const [emailToSend, setEmail] = useState(user ? user.email : "");
   const [emailNew, setEmailNew] = useState("");
+
 
   useEffect(() => {
     const getToken = async () => {
@@ -20,10 +21,21 @@ const ForgotPasswordScreen = ({ navigation }) => {
     getToken();
   }, []);
 
-  console.log("Token:", token);
 
   const handleSendCodeEmail = async () => {
     try {
+      console.log("Email to send code:", emailToSend );
+
+      if (!emailToSend && !emailNew) {
+        Alert.alert("Please enter your email.");
+        return null;
+      }
+      
+      if(!isEmail(emailToSend || emailNew)){
+        Alert.alert("Please enter a valid email.");
+        return null;
+      }
+
       const response = await axios.post(
         `${REACT_APP_API_BASE_URL}/users/send-code`,
         { email: emailToSend || emailNew },
@@ -37,7 +49,6 @@ const ForgotPasswordScreen = ({ navigation }) => {
       console.log("Verification code sent:", code);
       return code; // Return the code for further use
     } catch (err) {
-      console.error("Error sending verification code:", err);
       Alert.alert("Error sending verification code.");
       return null;
     }

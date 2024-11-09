@@ -30,8 +30,7 @@ const Certificates = () => {
       );
       setCertificates(response.data);
     } catch (error) {
-      setError("Failed to load certificates.");
-      console.error("Error fetching certificates: ", error);
+      // console.error("Error fetching certificates:", error.response.data);
     } finally {
       setLoading(false);
     }
@@ -68,6 +67,14 @@ const Certificates = () => {
         <Button mode="contained" onPress={fetchCertificates}>
           Retry
         </Button>
+      </View>
+    );
+  }
+
+  if (certificates.length === 0) {
+    return (
+      <View style={styles.noCertificatesContainer}>
+        <Text style={styles.noCertificatesText}>No certificates available.</Text>
       </View>
     );
   }
@@ -156,6 +163,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#d32f2f",
     marginBottom: 16,
+  },
+  noCertificatesContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  noCertificatesText: {
+    fontSize: 18,
+    color: "#666",
   },
 });
 

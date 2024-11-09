@@ -13,17 +13,33 @@ import { REACT_APP_API_BASE_URL } from "../utils/constant";
 import { useDispatch } from "react-redux";
 import { login } from "../store/slices/authSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { isEmail } from "../regex/regex";
 
 const Login = ({ navigation }) => {
-  const [email, setEmail] = useState("tranhuy12072003@gmail.com");
-  const [password, setPassword] = useState("Anhbakhia3@");
+  const [email, setEmail] = useState("dochituongshpy@gmail.com");
+  const [password, setPassword] = useState("Tuong@2003");
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async () => {
-    setLoading(true); // Set loading state to true
+    setLoading(true);
     try {
-      console.log(REACT_APP_API_BASE_URL);
+      
+      if (!email) {
+        Alert.alert("Login Failed", "Email is required");
+        return;
+      }
+     
+      if(!password) {
+        Alert.alert("Login Failed", "Password is required");
+        return;
+      }
+      if(isEmail(email) === false) {
+        Alert.alert("Login Failed", "Email is invalid");
+        return;
+      }
+
       const response = await axios.post(
         `${REACT_APP_API_BASE_URL}/auth/login`,
         {
@@ -31,7 +47,6 @@ const Login = ({ navigation }) => {
           password,
         }
       );
-
       const { user, token } = response.data;
 
       if (user) {
@@ -40,7 +55,6 @@ const Login = ({ navigation }) => {
 
         dispatch(login(user));
 
-        // Navigate based on user role
         if (user.role === "customer") {
           navigation.replace("Main");
         } else {
@@ -75,13 +89,47 @@ const Login = ({ navigation }) => {
         keyboardType="email-address"
         autoCapitalize="none"
       />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry={true}
-      />
+
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          borderWidth: 1,
+          borderColor: "#ccc",
+          borderRadius: 8,
+          overflow: "hidden",
+          backgroundColor: "#f9f9f9",
+        }}
+      >
+        <TextInput
+          style={{
+            flex: 1,
+            height: 45,
+            paddingHorizontal: 12,
+            fontSize: 16,
+            color: "#333",
+          }}
+          placeholder="Password"
+          placeholderTextColor="#999"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry={!showPassword}
+        />
+
+        <TouchableOpacity
+          onPress={() => setShowPassword((prev) => !prev)}
+          style={{
+            paddingHorizontal: 15,
+            borderTopRightRadius: 8,
+            borderBottomRightRadius: 8,
+          }}
+        >
+          <Text style={{ color: "#007bff", fontWeight: "600", fontSize: 16 }}>
+            {showPassword ? "Hide" : "Show"}
+          </Text>
+        </TouchableOpacity>
+      </View>
+
       <TouchableOpacity
         onPress={handleForgotPassword}
         style={styles.forgotButton}

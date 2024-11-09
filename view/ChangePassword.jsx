@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { REACT_APP_API_BASE_URL } from "../utils/constant";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {isValidPassword} from "../regex/regex";
 
 const ChangePassword = ({ navigation }) => {
   const [currentPassword, setCurrentPassword] = useState("");
@@ -22,26 +23,32 @@ const ChangePassword = ({ navigation }) => {
   const user = useSelector((state) => state.auth.user);
   const token = AsyncStorage.getItem("token");
 
-  const validateForm = () => {
+  const handleChangePassword = async () => {
+    setLoading(true);
+
     if (!newPassword || !confirmPassword || !currentPassword) {
       Alert.alert("All fields are required.");
-      return false;
+      setLoading(false);
+      return 
     }
     if (newPassword !== confirmPassword) {
       Alert.alert("New password and confirm password do not match.");
-      return false;
+      setLoading(false);
+      return 
     }
-    if (newPassword.length < 6) {
-      Alert.alert("Password should be at least 6 characters.");
-      return false;
+    if (!isValidPassword(newPassword)) {
+      Alert.alert(
+        "Invalid Password",
+        [
+          "Password should contain at least:",
+          "- least one uppercase letter",
+          "- least one special character",
+          "- least 8 characters",
+        ].join("\n")
+      );      setLoading(false);
+      return 
     }
-    return true;
-  };
-
-  const handleChangePassword = async () => {
-    if (!validateForm()) return;
-
-    setLoading(true);
+    
     try {
       const response = await axios.put(
         `${REACT_APP_API_BASE_URL}/users/change-password/${user._id}`,
@@ -64,8 +71,8 @@ const ChangePassword = ({ navigation }) => {
         Alert.alert("Error", "Failed to change password.");
       }
     } catch (error) {
-      Alert.alert("Error", "Failed to change password.");
-      console.error("Change password error:", error);
+     
+        Alert.alert("Error",error.response.data.message || "Failed to change password.");
     } finally {
       setLoading(false);
     }
@@ -105,7 +112,7 @@ const ChangePassword = ({ navigation }) => {
         }
       />
       <HelperText type="info" visible={newPassword.length < 6}>
-        Password should be at least 6 characters long.
+        Password should be at least 8 characters long and have at least one uppercase, one special character.
       </HelperText>
 
       <TextInput

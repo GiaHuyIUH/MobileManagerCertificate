@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Alert } from "react-native";
+import { View, StyleSheet, Alert, TouchableOpacity } from "react-native";
 import { TextInput, Button, Text } from "react-native-paper";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { REACT_APP_API_BASE_URL } from "../utils/constant";
+import { isValidPassword } from "../regex/regex";
 
 const RefreshPassword = () => {
   const navigation = useNavigation();
@@ -15,6 +16,8 @@ const RefreshPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showRePassword, setReShowPassword] = useState(false);
 
   useEffect(() => {
     const fetchToken = async () => {
@@ -50,6 +53,19 @@ const RefreshPassword = () => {
       return;
     }
 
+    if (!isValidPassword(newPassword)) {
+      Alert.alert(
+        "Invalid Password",
+        [
+          "Password should contain at least:",
+          "- least one uppercase letter",
+          "- least one special character",
+          "- least 8 characters",
+        ].join("\n")
+      );
+      return;
+    }
+
     try {
       const response = await axios.put(
         `${REACT_APP_API_BASE_URL}/users/forgotpassword/${user._id}`,
@@ -77,24 +93,43 @@ const RefreshPassword = () => {
     <View style={styles.container}>
       <Text style={styles.title}>Change Password</Text>
 
-      <TextInput
-        label="New Password"
-        mode="outlined"
-        secureTextEntry
-        value={newPassword}
-        onChangeText={setNewPassword}
-        style={styles.input}
-      />
+      {/* New Password Input */}
+      <View style={styles.inputContainer}>
+        <TextInput
+          label="New Password"
+          mode="outlined"
+          secureTextEntry={showPassword}
+          value={newPassword}
+          onChangeText={setNewPassword}
+          style={styles.input}
+        />
+        <TouchableOpacity
+          onPress={() => setShowPassword((prev) => !prev)}
+          style={styles.eyeIcon}
+        >
+          <Text style={styles.eyeText}>{showPassword ? "Hide " : "Show"}</Text>
+        </TouchableOpacity>
+      </View>
 
-      <TextInput
-        label="Confirm New Password"
-        mode="outlined"
-        secureTextEntry
-        value={confirmPassword}
-        onChangeText={setConfirmPassword}
-        style={styles.input}
-      />
+      {/* Confirm Password Input */}
+      <View style={styles.inputContainer}>
+        <TextInput
+          label="Confirm New Password"
+          mode="outlined"
+          secureTextEntry={showRePassword}
+          value={confirmPassword}
+          onChangeText={setConfirmPassword}
+          style={styles.input}
+        />
+        <TouchableOpacity
+          onPress={() => setReShowPassword((prev) => !prev)}
+          style={styles.eyeIcon}
+        >
+          <Text style={styles.eyeText}>{showRePassword ? "Hide " : "Show"}</Text>
+        </TouchableOpacity>
+      </View>
 
+      {/* Change Password Button */}
       <Button
         mode="contained"
         onPress={handleChangePassword}
@@ -119,13 +154,32 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 24,
   },
-  input: {
+  inputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 12,
+    overflow: "hidden",
+    },
+  input: {
+    flex: 1,
+    paddingHorizontal: 10,
+    
+  },
+  eyeIcon: {
+    paddingHorizontal: 15,
+    backgroundColor: "#f9f9f9",
+  },
+  eyeText: {
+    color: "#007bff",
+    fontWeight: "600",
+    fontSize: 16,
+    width: 40,
   },
   changeButton: {
-    paddingVertical: 8,
+    paddingVertical: 12,
     borderRadius: 20,
     backgroundColor: "#00c4cc",
+    marginTop: 20,
   },
 });
 

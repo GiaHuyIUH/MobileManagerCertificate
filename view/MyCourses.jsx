@@ -33,7 +33,6 @@ const MyCourses = ({ navigation }) => {
         setCoursesData(response.data);
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching courses and bundles:", error);
         setLoading(false);
       }
     };

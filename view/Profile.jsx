@@ -13,12 +13,14 @@ import {
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { REACT_APP_API_BASE_URL } from "../utils/constant";
-import { updateUser } from "../store/slices/authSlice";
+import { logoutUser, updateUser } from "../store/slices/authSlice";
 import * as ImagePicker from "expo-image-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { FontAwesome } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Ionicons } from "@expo/vector-icons";
+import {isBirthdate, isTenDigitNumber} from "../regex/regex";
+import { err } from "react-native-svg";
 
 const Profile = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -59,11 +61,20 @@ const Profile = ({ navigation }) => {
   const handleProfileUpdate = async () => {
     const formData = new FormData();
     if (user.birthday !== undefined) {
+      if (!isBirthdate(user.birthday)) {
+        console.log(user.birthday);
+        alert(" Birthday must be before today");
+        return;
+      }
       formData.append("birthday", user.birthday);
     }
     formData.append("name", user.name);
     formData.append("email", user.email);
     if (user.numberphone !== undefined) {
+      if(isTenDigitNumber(user.numberphone) === false) {
+        alert("phone number must be 10 digits");
+        return;
+      }
       formData.append("numberphone", user.numberphone);
     }
     if (user.avt) {
@@ -92,6 +103,7 @@ const Profile = ({ navigation }) => {
         setOpenModal(false);
       }
     } catch (error) {
+      console.log(err.response.data)
       console.error("Error updating user:", error);
     }
   };
@@ -123,8 +135,8 @@ const Profile = ({ navigation }) => {
   const logout = async () => {
     try {
       await AsyncStorage.removeItem("token");
-      // Navigate to login screen
-      navigation.navigate("Login");
+      dispatch(logoutUser());
+      navigation.replace("Login");
     } catch (error) {
       console.error("Error logging out:", error);
     }
@@ -135,10 +147,10 @@ const Profile = ({ navigation }) => {
       <View style={styles.profileContainer}>
         <Image
           style={[styles.avatar]}
-          source={{ uri: avatarURL || oldUser.avt }}
+          source={{ uri: avatarURL || oldUser?.avt }}
         />
         <View style={styles.infoContainer}>
-          <Text style={styles.username}>{oldUser.name}</Text>
+          <Text style={styles.username}>{oldUser?.name}</Text>
           <TouchableOpacity onPress={handleModalOpen} style={styles.editButton}>
             <FontAwesome name="edit" size={24} color="#1976d2" />
             <Text style={styles.editText}>Edit Profile</Text>
@@ -162,7 +174,7 @@ const Profile = ({ navigation }) => {
           <Image
             key={avatarURL} // Add this line
             style={[styles.avatar, { alignSelf: "center" }]}
-            source={{ uri: avatarURL || oldUser.avt }}
+            source={{ uri: avatarURL || oldUser?.avt }}
           />
 
           <TouchableOpacity
@@ -187,7 +199,7 @@ const Profile = ({ navigation }) => {
           <Text style={styles.label}>Name</Text>
           <TextInput
             style={styles.input}
-            value={user.name}
+            value={user?.name}
             placeholder="Name"
             onChangeText={(value) => handleInputChange("name", value)}
           />
@@ -196,18 +208,18 @@ const Profile = ({ navigation }) => {
           <TextInput
             style={styles.input}
             placeholder="Location"
-            value={user.address}
+            value={user?.address}
             onChangeText={(value) => handleInputChange("address", value)}
           />
 
           <Text style={styles.label}>Email</Text>
-          <TextInput style={styles.input} value={user.email} editable={false} />
+          <TextInput style={styles.input} value={user?.email} editable={false} />
 
           <Text style={styles.label}>Phone number</Text>
           <TextInput
             style={styles.input}
             placeholder="Phone number"
-            value={user.numberphone}
+            value={user?.numberphone}
             onChangeText={(value) => handleInputChange("numberphone", value)}
           />
 

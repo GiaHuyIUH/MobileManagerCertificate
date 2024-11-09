@@ -33,6 +33,7 @@ const Search = () => {
 
   useEffect(() => {
     const handleSearch = async () => {
+
       if (query.trim()) {
         setLoading(true);
         try {
@@ -90,7 +91,12 @@ const Search = () => {
             )}
           </View>
           <TouchableOpacity
-            style={styles.searchButton}
+            style={[
+              styles.searchButton,
+              { backgroundColor: query.trim() ? "#1976d2" : "#cccccc" }, // Set background color based on query
+            ]}
+            disabled={!query.trim()} // Disable button when no text
+            
             onPress={() => navigation.navigate('SearchPage', { query: query })}
           >
             <AntDesign name="search1" size={24} color="white" />
