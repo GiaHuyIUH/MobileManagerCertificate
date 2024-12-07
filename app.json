@@ -3,6 +3,7 @@
     "name": "MobileManagerCertificate",
     "slug": "MobileManagerCertificate",
     "version": "1.0.0",
+    "scheme": "com.ghuy1207.MobileManagerCertificate",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -13,10 +14,10 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.codeWithHuy.MobileManagerCertificate"
+      "bundleIdentifier": "com.ghuy1207.MobileManagerCertificate"
     },
     "android": {
-      "package": "com.codeWithHuy.MobileManagerCertificate",
+      "package": "com.ghuy1207.MobileManagerCertificate",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -29,7 +30,6 @@
       "eas": {
         "projectId": "e93d4169-dc6c-4c16-bd0f-834835cb7da2"
       }
-    },
-    "scheme": "MobileManagerCertificate"
+    }
   }
 }

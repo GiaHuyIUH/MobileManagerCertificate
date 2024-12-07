@@ -5,6 +5,7 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { REACT_APP_API_BASE_URL } from "../utils/constant";
+import { logoutUser } from "../store/slices/authSlice";
 
 const RefreshPassword = () => {
   const navigation = useNavigation();
@@ -65,7 +66,8 @@ const RefreshPassword = () => {
 
       if (response.status === 200) {
         Alert.alert("Password reset successfully.");
-        navigation.navigate("Login"); // Assuming you have a Login screen
+        logoutUser();
+        navigation.replace("Login");
       }
     } catch (error) {
       console.error("Error resetting password:", error);

@@ -11,7 +11,6 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  FlatList,
 } from "react-native";
 import { ProgressBar } from "react-native-paper";
 import { REACT_APP_API_BASE_URL } from "../utils/constant";

@@ -19,6 +19,8 @@ import SearchPage from "./view/SearchPage";
 import ForgotPasswordScreen from "./view/ForgotPassword";
 import OTPScreen from "./view/OTPScreen";
 import RefreshPassword from "./view/RefreshPassword";
+import Stats from "./view/Stats";
+import DetailCertificate from "./view/DetailCertificate";
 
 const Stack = createNativeStackNavigator();
 export default function App() {
@@ -34,7 +36,17 @@ export default function App() {
           <Stack.Screen
             name="Connect"
             component={Connect}
-            options={{ headerShown: false }} // Hide the header
+            options={{ title: "Connect metamark" }}
+          />
+          <Stack.Screen
+            name="Stats"
+            component={Stats}
+            options={{ title: "Stats" }}
+          />
+          <Stack.Screen
+            name="Detaicertificate"
+            component={DetailCertificate}
+            options={{ title: "Detaicertificate" }}
           />
           <Stack.Screen
             name="SearchPage"

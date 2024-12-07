@@ -8,27 +8,19 @@ import {
   Alert,
 } from "react-native";
 import axios from "axios";
-import { NavigationProp } from "@react-navigation/native";
 import { REACT_APP_API_BASE_URL } from "../utils/constant";
 import { useDispatch } from "react-redux";
 import { login } from "../store/slices/authSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
+import { makeRedirectUri } from "expo-auth-session";
 
 // web: 520064953188-o0orgdhelcn97rb2k1o1m5r5u6sdc3as.apps.googleusercontent.com
 // ios: 520064953188-bv8e00ehsp4el7pe1nmj8sf1hoc8sgqp.apps.googleusercontent.comexpo
 // android: 520064953188-enkpvhifd1qf7pu020o9c44ph7koa5ur.apps.googleusercontent.com
 
 WebBrowser.maybeCompleteAuthSession();
-
-const LoginWithGoogle = () => {
-  return (
-    <View>
-      <Text>Google</Text>
-    </View>
-  );
-};
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState("tranhuy12072003@gmail.com");
@@ -37,26 +29,24 @@ const Login = ({ navigation }) => {
   const dispatch = useDispatch();
   const [user, setUser] = useState(null);
   const [accessToken, setAccessToken] = useState(null);
-
+  console.log(makeRedirectUri({ useProxy: true }));
   const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
     clientId:
-      "520064953188-enkpvhifd1qf7pu020o9c44ph7koa5ur.apps.googleusercontent.com",
-    androidClientId:
-      "520064953188-enkpvhifd1qf7pu020o9c44ph7koa5ur.apps.googleusercontent.com",
-    iosClientId:
-      "520064953188-bv8e00ehsp4el7pe1nmj8sf1hoc8sgqp.apps.googleusercontent.com",
-    webClientId:
       "520064953188-o0orgdhelcn97rb2k1o1m5r5u6sdc3as.apps.googleusercontent.com",
+    redirectUri: makeRedirectUri({
+      useProxy: true, // Đảm bảo sử dụng `useProxy` để Expo tự động thêm URI proxy
+    }),
   });
-  console.log(request, response);
 
   useEffect(() => {
+    console.log("req: ", request);
+
     if (response?.type === "success") {
       setAccessToken(response.authentication.accessToken);
-      console.log(response.authentication.accessToken);
+      console.log("Success: ", response.authentication.accessToken);
       accessToken && fetchGoogleUser();
     } else if (response?.type === "error") {
-      console.error("Error:", response.error);
+      console.error("OAuth Error:", response.error);
     }
   }, [response]);
 
@@ -102,7 +92,7 @@ const Login = ({ navigation }) => {
 
         // Navigate based on user role
         if (user.role === "customer") {
-          navigation.navigate("Main");
+          navigation.replace("Main");
         } else {
           Alert.alert("Login Failed", "Only customers can login from mobile.");
         }
