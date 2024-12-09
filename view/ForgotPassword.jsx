@@ -24,7 +24,6 @@ const ForgotPasswordScreen = ({ navigation }) => {
 
   const handleSendCodeEmail = async () => {
     try {
-      console.log("Email to send code:", emailToSend );
 
       if (!emailToSend && !emailNew) {
         Alert.alert("Please enter your email.");
@@ -46,7 +45,6 @@ const ForgotPasswordScreen = ({ navigation }) => {
         }
       );
       const code = response.data.code;
-      console.log("Verification code sent:", code);
       return code; // Return the code for further use
     } catch (err) {
       Alert.alert("Error sending verification code.");

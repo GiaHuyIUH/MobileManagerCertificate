@@ -47,14 +47,12 @@ const Profile = ({ navigation }) => {
     }
 
     const pickerResult = await ImagePicker.launchImageLibraryAsync();
-    console.log("Picker result: ", pickerResult.assets[0].uri);
     if (!pickerResult.canceled) {
       const newAvatarUri = `${
         pickerResult.assets[0].uri
       }?timestamp=${new Date().getTime()}`;
       setUser({ ...user, avt: newAvatarUri });
       setAvatarURL(newAvatarUri);
-      console.log("New avatar URI: ", newAvatarUri);
     }
   };
 
@@ -62,7 +60,6 @@ const Profile = ({ navigation }) => {
     const formData = new FormData();
     if (user.birthday !== undefined) {
       if (!isBirthdate(user.birthday)) {
-        console.log(user.birthday);
         alert(" Birthday must be before today");
         return;
       }
@@ -103,7 +100,6 @@ const Profile = ({ navigation }) => {
         setOpenModal(false);
       }
     } catch (error) {
-      console.log(err.response.data)
       console.error("Error updating user:", error);
     }
   };
@@ -129,7 +125,6 @@ const Profile = ({ navigation }) => {
     setOpenModal(false);
     setUser(oldUser);
     setAvatarURL(null);
-    console.log("User: ", user);
   };
 
   const logout = async () => {

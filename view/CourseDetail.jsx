@@ -33,7 +33,7 @@ const CourseDetail = ({ navigation }) => {
   const { user } = useSelector((state) => state.auth);
   const walletAddress = useSelector((state) => state.wallet.address);
 
-  const { provider } = useWalletConnectModal();
+  const { provider,address } = useWalletConnectModal();
   // Fetch course details
   useEffect(() => {
     const fetchCourse = async () => {
@@ -82,7 +82,7 @@ const CourseDetail = ({ navigation }) => {
       return;
     }
 
-    if (!walletAddress) {
+    if (!address) {
       setMessage("Please create a wallet to enroll in the course.");
       return;
     }
@@ -113,9 +113,8 @@ const CourseDetail = ({ navigation }) => {
         course.organization.name,
         amount
       );
-      console.log("Payment result:", paymentResult);
       if (paymentResult.success) {
-        const response = await axios.post(
+        const requestCreateEnrollment = await axios.post(
           `${REACT_APP_API_BASE_URL}/enrollment`,
           {
             user: studentId,
@@ -128,8 +127,7 @@ const CourseDetail = ({ navigation }) => {
           }
         );
 
-        console.log("Enrollment created successfully:", response.data);
-        dispatch(addEnrollmentToUser(response.data));
+        dispatch(addEnrollmentToUser(requestCreateEnrollment.data));
         navigation.navigate("LearnCourse", { id }); // Navigate to the learning page
       } else {
         navigation.navigate("Connect");

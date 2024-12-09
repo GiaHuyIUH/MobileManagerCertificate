@@ -18,10 +18,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.dochituong.MobileManagerCertificate",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
-  }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "fe79c4ae-5d1c-4999-8c71-79a0d9cc87cd"
+      }
+    }}
 }

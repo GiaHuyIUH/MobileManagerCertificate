@@ -35,7 +35,6 @@ const RefreshPassword = () => {
         `${REACT_APP_API_BASE_URL}/users/getuserbyemail/${email}`
       );
       setUser(response.data);
-      console.log("User data:", response.data);
     } catch (error) {
       console.error("Error fetching user:", error);
       Alert.alert("Error fetching user. Please try again.");

@@ -65,7 +65,7 @@ const Signup = () => {
       );
       const { token } = response.data;
       await AsyncStorage.setItem("token", token);
-      console.log("Signup successful:", response.data);
+      ("Signup successful:", response.data);
       dispatch(updateUser(response.data.user));
       navigation.replace("Main");
     } catch (error) {

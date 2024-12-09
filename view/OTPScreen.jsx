@@ -11,8 +11,6 @@ const OTPScreen = ({ navigateion }) => {
 
   const { email, verificationCode } = route.params;
 
-  console.log("Email: ", email);
-  console.log("Verification code: ", verificationCode);
 
   const handleChange = (value, index) => {
     const newOtp = [...otp];
@@ -35,8 +33,6 @@ const OTPScreen = ({ navigateion }) => {
 
   const handleSubmit = () => {
     const enteredCode = otp.join("");
-    console.log("Entered code: ", enteredCode);
-    console.log("Verification code: ", verificationCode);
 
     if (enteredCode == verificationCode) {
       Alert.alert("Verification code is correct!");

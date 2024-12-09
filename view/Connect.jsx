@@ -25,6 +25,7 @@ export default function Connect({ navigation }) {
   const [snackVisible, setSnackVisible] = useState(false);
   const [snackMessage, setSnackMessage] = useState("");
   const [totalCertificates, setTotalCertificates] = useState(null);
+  console.log(address)
 
   useEffect(() => {
     const getSignerAddress = async () => {
@@ -32,7 +33,6 @@ export default function Connect({ navigation }) {
         const web3Provider = new ethers.providers.Web3Provider(provider);
         const signer = web3Provider.getSigner();
         const address = await signer.getAddress();
-        console.log("Wallet Address:", address);
       }
     };
     getSignerAddress();
@@ -40,19 +40,16 @@ export default function Connect({ navigation }) {
 
   useEffect(() => {
     if (isConnected) {
-      console.log(`Successfully connected: ${address}`);
       setSnackMessage(`Connected: ${address}`);
       setSnackVisible(true);
       fetchTotalCertificates();
     } else {
-      console.log("Not connected to wallet.");
     }
   }, [isConnected, address]);
 
   const fetchTotalCertificates = async () => {
     try {
       const total = await readTotalCertificates();
-      console.log("Total Certificates:", total);
       setTotalCertificates(total);
     } catch (error) {
       console.error("Error fetching certificates:", error);
@@ -68,7 +65,6 @@ export default function Connect({ navigation }) {
         setSnackMessage("Wallet disconnected.");
         setSnackVisible(true);
       } else {
-        console.log("Connecting to wallet...");
         await open();
       }
     } catch (error) {

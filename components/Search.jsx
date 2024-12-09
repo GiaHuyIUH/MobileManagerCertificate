@@ -120,7 +120,6 @@ const Search = () => {
                         key={index}
                         style={[styles.courseItem]}
                         onPress={() => {
-                          console.log('Navigating to CourseDetail with ID:', course._id);
                           navigation.navigate('CourseDetail', { id: course._id });
                         }}
                       >
@@ -143,7 +142,6 @@ const Search = () => {
                         key={index}
                         style={styles.courseItem}
                         onPress={() => {
-                          console.log('Navigating to BundleDetail with ID:', bundle._id);
                           navigation.navigate('BundleDetail', { id: bundle._id });
                         }}
                       >
